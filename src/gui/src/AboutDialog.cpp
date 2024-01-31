@@ -32,6 +32,11 @@ AboutDialog::AboutDialog(QWidget* parent, const QString& app_name) :
     version.append(QStringLiteral("-%1").arg(INPUTLEAP_REVISION));
 #endif
     ui_->m_pLabelAppVersion->setText(version);
+    //logoHeight is the real pixel height of the resource.
+    const int logoHeight = 45;
+    //set the app logo scale to width of the dialog
+    //the scale can range from 1 - 3 x
+    ui_->logoLabel->setPixmap(QPixmap(":/res/image/about.png").scaled(QSize(sizeHint().width(), std::max(logoHeight, std::min(135, (sizeHint().width()/163) * logoHeight))) , Qt::KeepAspectRatio, Qt::SmoothTransformation));
     setFixedSize( sizeHint() );
 }
 
