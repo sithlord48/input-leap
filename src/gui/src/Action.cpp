@@ -58,39 +58,11 @@ QString Action::text() const
 
     switch (type())
     {
-        case keyDown:
-        case keyUp:
-        case keystroke:
-            {
-                QString commandArgs = keySequence_.toString();
-                if (!keySequence_.isMouseButton())
-                {
-                    const QStringList& screens = typeScreenNames();
-                    if (haveScreens() && !screens.isEmpty())
-                    {
-                        QString screenList;
-                        for (int i = 0; i < screens.size(); i++)
-                        {
-                            screenList.append(screens[i]);
-                            if (i != screens.size() - 1)
-                                screenList.append(QStringLiteral(":"));
-                        }
-                        commandArgs.append(QStringLiteral(",%1").arg(screenList));
-                    }
-                    else
-                    {
-                        commandArgs.append(QStringLiteral(",*"));
-                    }
-                }
-                text.append(commandTemplate_.arg(commandArgs));
-            }
+        default:
             break;
 
         case switchToScreen:
             text.append(commandTemplate_.arg(switchScreenName()));
-            break;
-
-        case toggleScreen:
             break;
 
         case switchInDirection:
@@ -101,12 +73,27 @@ QString Action::text() const
             text.append(commandTemplate_.arg(lockCursorModeNames_[lockCursorMode_]));
             break;
 
-        default:
-            Q_ASSERT(0);
+        case keyDown:
+        case keyUp:
+        case keystroke:
+            QString commandArgs = keySequence_.toString();
+            if (!keySequence_.isMouseButton()) {
+                const QStringList& screens = typeScreenNames();
+                if (haveScreens() && !screens.isEmpty()) {
+                    QString screenList;
+                    for (int i = 0; i < screens.size(); i++) {
+                        screenList.append(screens[i]);
+                        if (i != screens.size() - 1)
+                            screenList.append(QStringLiteral(":"));
+                    }
+                    commandArgs.append(QStringLiteral(",%1").arg(screenList));
+                } else {
+                    commandArgs.append(QStringLiteral(",*"));
+                }
+            }
+            text.append(commandTemplate_.arg(commandArgs));
             break;
     }
-
-
     return text;
 }
 
