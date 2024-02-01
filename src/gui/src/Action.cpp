@@ -22,7 +22,7 @@
 #include <QSettings>
 #include <QTextStream>
 
-const char* Action::m_ActionTypeNames[] =
+const char* Action::actionTypeNames_[] =
 {
     "keyDown", "keyUp", "keystroke",
     "switchToScreen", "toggleScreen",
@@ -30,18 +30,18 @@ const char* Action::m_ActionTypeNames[] =
     "mouseDown", "mouseUp", "mousebutton"
 };
 
-const char* Action::m_SwitchDirectionNames[] = { "left", "right", "up", "down" };
-const char* Action::m_LockCursorModeNames[] = { "toggle", "on", "off" };
+const char* Action::switchDirectionNames_[] = { "left", "right", "up", "down" };
+const char* Action::lockCursorModeNames_[] = { "toggle", "on", "off" };
 
 Action::Action() :
-    m_KeySequence(),
-    m_Type(keystroke),
-    m_TypeScreenNames(),
-    m_SwitchScreenName(),
-    m_SwitchDirection(switchLeft),
-    m_LockCursorMode(lockCursorToggle),
-    m_ActiveOnRelease(false),
-    m_HasScreens(false)
+    keySequence_(),
+    type_(keystroke),
+    typeScreenNames_(),
+    switchScreenName_(),
+    switchDirection_(switchLeft),
+    lockCursorMode_(lockCursorToggle),
+    activeOnRelease_(false),
+    hasScreens_(false)
 {
 }
 
@@ -52,7 +52,7 @@ QString Action::text() const
      * in the end but now argument inside. If you need a function with no
      * argument, it can not have () in the end.
      */
-    QString text = QString(m_ActionTypeNames[m_KeySequence.isMouseButton() ?
+    QString text = QString(actionTypeNames_[keySequence_.isMouseButton() ?
                                              type() + int(mouseDown) : type()]);
 
     switch (type())
@@ -62,9 +62,9 @@ QString Action::text() const
         case keystroke:
             {
                 text += "(";
-                text += m_KeySequence.toString();
+                text += keySequence_.toString();
 
-                if (!m_KeySequence.isMouseButton())
+                if (!keySequence_.isMouseButton())
                 {
                     const QStringList& screens = typeScreenNames();
                     if (haveScreens() && !screens.isEmpty())
@@ -96,13 +96,13 @@ QString Action::text() const
 
         case switchInDirection:
             text += "(";
-            text += m_SwitchDirectionNames[m_SwitchDirection];
+            text += switchDirectionNames_[switchDirection_];
             text += ")";
             break;
 
         case lockCursorToScreen:
             text += "(";
-            text += m_LockCursorModeNames[m_LockCursorMode];
+            text += lockCursorModeNames_[lockCursorMode_];
             text += ")";
             break;
 
@@ -117,15 +117,15 @@ QString Action::text() const
 
 void Action::loadSettings(QSettings& settings)
 {
-    m_KeySequence.loadSettings(settings);
+    keySequence_.loadSettings(settings);
     setType(settings.value("type", keyDown).toInt());
 
-    m_TypeScreenNames.clear();
+    typeScreenNames_.clear();
     int numTypeScreens = settings.beginReadArray("typeScreenNames");
     for (int i = 0; i < numTypeScreens; i++)
     {
         settings.setArrayIndex(i);
-        m_TypeScreenNames.append(settings.value("typeScreenName").toString());
+        typeScreenNames_.append(settings.value("typeScreenName").toString());
     }
     settings.endArray();
 
@@ -138,7 +138,7 @@ void Action::loadSettings(QSettings& settings)
 
 void Action::saveSettings(QSettings& settings) const
 {
-    m_KeySequence.saveSettings(settings);
+    keySequence_.saveSettings(settings);
     settings.setValue("type", type());
 
     settings.beginWriteArray("typeScreenNames");

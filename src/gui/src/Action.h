@@ -43,47 +43,47 @@ class Action
 
     public:
         QString text() const;
-        const KeySequence& keySequence() const { return m_KeySequence; }
-        void setKeySequence(const KeySequence& seq) { m_KeySequence = seq; }
+        const KeySequence& keySequence() const { return keySequence_; }
+        void setKeySequence(const KeySequence& seq) { keySequence_ = seq; }
 
         void loadSettings(QSettings& settings);
         void saveSettings(QSettings& settings) const;
 
-        int type() const { return m_Type; }
-        void setType(int t) { m_Type = t; }
+        int type() const { return type_; }
+        void setType(int t) { type_ = t; }
 
-        const QStringList& typeScreenNames() const { return m_TypeScreenNames; }
-        void appendTypeScreenName(QString name) { m_TypeScreenNames.append(name); }
-        void clearTypeScreenNames() { m_TypeScreenNames.clear(); }
+        const QStringList& typeScreenNames() const { return typeScreenNames_; }
+        void appendTypeScreenName(QString name) { typeScreenNames_.append(name); }
+        void clearTypeScreenNames() { typeScreenNames_.clear(); }
 
-        const QString& switchScreenName() const { return m_SwitchScreenName; }
-        void setSwitchScreenName(const QString& n) { m_SwitchScreenName = n; }
+        const QString& switchScreenName() const { return switchScreenName_; }
+        void setSwitchScreenName(const QString& n) { switchScreenName_ = n; }
 
-        int switchDirection() const { return m_SwitchDirection; }
-        void setSwitchDirection(int d) { m_SwitchDirection = d; }
+        int switchDirection() const { return switchDirection_; }
+        void setSwitchDirection(int d) { switchDirection_ = d; }
 
-        int lockCursorMode() const { return m_LockCursorMode; }
-        void setLockCursorMode(int m) { m_LockCursorMode = m; }
+        int lockCursorMode() const { return lockCursorMode_; }
+        void setLockCursorMode(int m) { lockCursorMode_ = m; }
 
-        bool activeOnRelease() const { return m_ActiveOnRelease; }
-        void setActiveOnRelease(bool b) { m_ActiveOnRelease = b; }
+        bool activeOnRelease() const { return activeOnRelease_; }
+        void setActiveOnRelease(bool b) { activeOnRelease_ = b; }
 
-        bool haveScreens() const { return m_HasScreens; }
-        void setHaveScreens(bool b) { m_HasScreens = b; }
+        bool haveScreens() const { return hasScreens_; }
+        void setHaveScreens(bool b) { hasScreens_ = b; }
 
     private:
-        KeySequence m_KeySequence;
-        int m_Type;
-        QStringList m_TypeScreenNames;
-        QString m_SwitchScreenName;
-        int m_SwitchDirection;
-        int m_LockCursorMode;
-        bool m_ActiveOnRelease;
-        bool m_HasScreens;
+        KeySequence keySequence_;
+        int type_;
+        QStringList typeScreenNames_;
+        QString switchScreenName_;
+        int switchDirection_;
+        int lockCursorMode_;
+        bool activeOnRelease_;
+        bool hasScreens_;
 
-        static const char* m_ActionTypeNames[];
-        static const char* m_SwitchDirectionNames[];
-        static const char* m_LockCursorModeNames[];
+        static const char* actionTypeNames_[];
+        static const char* switchDirectionNames_[];
+        static const char* lockCursorModeNames_[];
 };
 
 QTextStream& operator<<(QTextStream& outStream, const Action& action);
