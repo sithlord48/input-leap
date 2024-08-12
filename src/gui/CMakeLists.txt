@@ -209,9 +209,6 @@ if (QT_DEFAULT_MAJOR_VERSION EQUAL 6)
 endif()
 target_link_libraries(input-leap OpenSSL::SSL OpenSSL::Crypto)
 
-target_compile_definitions (input-leap PRIVATE -DINPUTLEAP_VERSION_STAGE="${INPUTLEAP_VERSION_STAGE}")
-target_compile_definitions (input-leap PRIVATE -DINPUTLEAP_REVISION="${INPUTLEAP_REVISION}")
-
 if (BUILD_MSWINDOWS)
     include_directories ($ENV{BONJOUR_SDK_HOME}/Include)
     find_library (DNSSD_LIB dnssd.lib
